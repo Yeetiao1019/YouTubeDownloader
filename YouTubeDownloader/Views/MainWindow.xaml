@@ -1,0 +1,140 @@
+﻿<Window x:Class="YouTubeDownloader.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Icon="{StaticResource ResourceKey=AppIcon}"
+        Title="YouTube 下載器" 
+        Height="600" 
+        Width="800"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- URL 輸入區 -->
+        <DockPanel Grid.Row="0" Margin="0,0,0,10">
+            <Button DockPanel.Dock="Right" 
+                    Content="預覽" 
+                    Command="{Binding PreviewCommand}"
+                    Width="100" 
+                    Margin="5,0,0,0"/>
+            <TextBox Text="{Binding YoutubeUrl, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalContentAlignment="Center"/>
+        </DockPanel>
+
+        <!-- 下載路徑選擇 -->
+        <DockPanel Grid.Row="1" Margin="0,0,0,10">
+            <Button DockPanel.Dock="Right" 
+                    Content="選擇路徑" 
+                    Command="{Binding SelectPathCommand}"
+                    Width="100" 
+                    Margin="5,0,0,0"/>
+            <TextBox Text="{Binding DownloadPath}"
+                     IsReadOnly="True"
+                     VerticalContentAlignment="Center"/>
+        </DockPanel>
+
+        <!-- 影片資訊和下載選項 -->
+        <Border Grid.Row="2" 
+                BorderBrush="LightGray" 
+                BorderThickness="1" 
+                Padding="10" 
+                Margin="0,0,0,10"
+                Visibility="{Binding CurrentVideo, Converter={StaticResource NullToVisibilityConverter}}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 影片縮圖 -->
+                <Image Width="160" 
+                       Height="90"
+                       Margin="0,0,10,0"
+                       Source="{Binding CurrentVideo.ThumbnailUrl}"
+                       Stretch="Uniform"/>
+
+                <!-- 影片資訊和下載選項 -->
+                <StackPanel Grid.Column="1" Margin="5,0,0,0">
+                    <TextBlock Text="{Binding CurrentVideo.Title}"
+                             TextWrapping="Wrap"
+                             FontWeight="Bold"
+                             Margin="0,0,0,5"/>
+
+                    <TextBlock Margin="0,0,0,5">
+                        <Run Text="作者："/>
+                        <Run Text="{Binding CurrentVideo.Author}"/>
+                    </TextBlock>
+
+                    <TextBlock Margin="0,0,0,10">
+                        <Run Text="時長："/>
+                        <Run Text="{Binding CurrentVideo.Duration}"/>
+                    </TextBlock>
+
+                    <!-- 下載選項 -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <!--<RadioButton Content="MP4 影片" 
+                                   IsChecked="{Binding IsAudioOnly, Converter={StaticResource InverseBooleanConverter}}"
+                                   Margin="0,0,15,0"/>-->
+                        <RadioButton Content="MP3 音訊" 
+                                   IsChecked="{Binding IsAudioOnly}"/>
+                    </StackPanel>
+
+                    <Button Content="下載" 
+                            Command="{Binding DownloadCommand}"
+                            Width="100"
+                            HorizontalAlignment="Left"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- 下載佇列 -->
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="下載佇列" 
+                       FontWeight="Bold" 
+                       Margin="0,0,0,5"/>
+
+            <ListView Grid.Row="1" 
+                      ItemsSource="{Binding DownloadQueue}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="{Binding Title}" 
+                                     FontWeight="Bold"/>
+
+                            <ProgressBar Grid.Row="1" 
+                                       Height="20" 
+                                       Margin="0,5"
+                                       Minimum="0"
+                                       Maximum="100"
+                                       Value="{Binding Progress}"/>
+
+                            <TextBlock Grid.Row="2" 
+                                     Text="{Binding Status}"
+                                     Foreground="{Binding Status, 
+                                         Converter={StaticResource StatusToColorConverter}}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</Window>
