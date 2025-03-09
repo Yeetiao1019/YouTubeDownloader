@@ -14,10 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FFMpegCore" Version="5.2.0" />
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="YoutubeExplode" Version="6.5.0" />
+    <PackageReference Include="TagLibSharp" Version="2.3.0" />
+    <PackageReference Include="YoutubeExplode" Version="6.5.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,4 +40,9 @@
     </Page>
   </ItemGroup>
 
+<ItemGroup>
+    <None Include="ffmpeg.exe">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+</ItemGroup>
 </Project>
