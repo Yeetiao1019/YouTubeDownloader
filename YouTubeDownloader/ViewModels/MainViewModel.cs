@@ -22,7 +22,7 @@ namespace YouTubeDownloader.ViewModels
 
         private string _youtubeUrl;
         private VideoInfo _currentVideo;
-        private bool _isAudioOnly;
+        private bool _isAudioOnly = true;
         private string _downloadPath;
         private bool _isLoading;
 
